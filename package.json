@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite", // запустится на порту 5173
-    "build": "vite build", // соберет в папку dist 
-    "preview": "vite preview" // preview собранной версии
+    "dev": "vite", 
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@eslint/create-config": "^1.10.0",
