@@ -19,18 +19,16 @@ export default () => {
         url: yup.string().url().trim().required(),
     })
 
-    const validate =  (state) => {
-        schema.validate(state)
-        .then(validData => {
-            if (!isDublicate) {
-                proxyState.previousValidURL = validData.url
-                proxyState.status = 'RSS успешно загружен'
-            } 
-            else {
-                proxyState.status = 'RSS уже существует'
-            }
+  const validate = (url) => {
+    return schema.validate({url})
+      .then((validData) => {
+        return { isValid: true, data: validData }
         })
         .catch(error => {
+        return { isValid: false, error: error.message }
+      })
+  }
+
   input.addEventListener('input', (e) => {
     e.preventDefault()
     const inputData = input.value
