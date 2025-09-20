@@ -1,4 +1,5 @@
-export const state = {
+export const createState = () => {
+    return {
     formState: {
         url: '',
         status: '', // success, dublicate, error
@@ -9,3 +10,4 @@ export const state = {
         processError: null,
     }
   }
+}

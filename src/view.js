@@ -1,11 +1,13 @@
 import onChange from 'on-change'
-import { state } from './state'
+import { createState } from './state'
 
 export const elements = {
   submitButton: document.querySelector('button[type="submit"]'),
   input: document.querySelector('#url-input'),
   feedback: document.querySelector('.feedback'),
 }
+
+const state = createState()
 
 export const proxyState = onChange(state, (path) => {
   if (path === 'formState.status') {
