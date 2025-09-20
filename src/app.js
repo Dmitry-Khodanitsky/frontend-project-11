@@ -1,34 +1,25 @@
-import onChange from "on-change"
 import * as yup from 'yup'
+import { elements, proxyState } from './view'
+
 
 export default () => {
-
-    const state = {
-        url: 'https://lorem-rss.hexlet.app/',
-        status: '',
-        previousValidURL: 'https://lorem-rss.hexlet.app/feed'
-    }
-    const proxyState = onChange(state, (path, value, previousValue) => {
-        if (path === 'url') {
-            //renderUI()
-        }   
-    })
-    const isDublicate = proxyState.url === proxyState.previousValidURL
-
-    const schema = yup.object().shape({
-        url: yup.string().url().trim().required(),
-    })
+  
+  const schema = yup.object().shape({
+    url: yup.string().url().trim().required(),
+  })
 
   const validate = (url) => {
     return schema.validate({url})
       .then((validData) => {
         return { isValid: true, data: validData }
-        })
-        .catch(error => {
+      })
+      .catch(error => {
         return { isValid: false, error: error.message }
       })
   }
 
+  const { submitButton, input } = elements
+  
   input.addEventListener('input', (e) => {
     e.preventDefault()
     const inputData = input.value
