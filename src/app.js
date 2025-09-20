@@ -31,17 +31,29 @@ export default () => {
             }
         })
         .catch(error => {
-            console.log(error.message)
-            proxyState.status = 'Ресурс не содержит валидный RSS'
-        })
-    }
-    
-    
-    
-//console.log(validate(proxyState))
-//console.log(state)
+  input.addEventListener('input', (e) => {
+    e.preventDefault()
+    const inputData = input.value
+    proxyState.formState.url = inputData
+  })
 
-    
-    //const check = schema.validate('https://lorem-rss.hexlet.app/feed')
-    //console.log(check)
+  submitButton.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    validate(proxyState.formState.url)
+    .then(validationResult => {
+        if(!validationResult.isValid) {
+            proxyState.formState.status = 'error'
+            return
+        }
+        const isDublicate = proxyState.formState.url === proxyState.formState.previousValidURL
+        if (isDublicate) {
+            proxyState.formState.status = 'dublicate'
+            return
+        }
+        proxyState.formState.status = 'success'
+        proxyState.formState.previousValidURL = proxyState.formState.url
+    })
+    .catch(() => proxyState.formState.status = 'error')
+  })
 }
