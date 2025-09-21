@@ -35,12 +35,21 @@ export default () => {
   })
 
   const validate = (url) => {
-    return schema.validate({url})
+    return schema
+      .validate({ url })
       .then((validData) => {
-        return { isValid: true, data: validData }
+        const isDublicate =
+          proxyState.formState.url === proxyState.formState.previousValidURL
+        if (isDublicate) {
+          return {
+            status: 'dublicate',
+            message: i18next.t('statusMessage.dublicate'),
+          }
+        }
+        return { status: 'success', data: validData }
       })
-      .catch(error => {
-        return { isValid: false, error: error.message }
+      .catch((error) => {
+        return { status: 'error', message: error.message }
       })
   }
 
