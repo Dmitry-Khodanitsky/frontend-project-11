@@ -57,7 +57,7 @@ export default () => {
   
   input.addEventListener('input', (e) => {
     e.preventDefault()
-    const inputData = input.value
+    const inputData = input.value.trim()
     proxyState.formState.url = inputData
   })
 
