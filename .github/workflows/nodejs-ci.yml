@@ -50,4 +50,10 @@ jobs:
           args: >
             -Dsonar.projectKey=Dmitry-Khodanitsky_frontend-project-11
             -Dsonar.organization=dmitry-khodanitsky
+            -Dsonar.coverage.exclusions=**/*
+            -Dsonar.tests=
+            -Dsonar.test.inclusions=
+            -Dsonar.test.exclusions=
+            -Dsonar.javascript.lcov.reportPaths=
+            -Dsonar.testExecutionReportPaths=
           
