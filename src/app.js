@@ -29,7 +29,7 @@ export default () => {
       url: 'Ссылка должна быть валидным URL',
     },
   })
-  
+
   const schema = yup.object().shape({
     url: yup.string().url().trim().required(),
   })
@@ -54,7 +54,7 @@ export default () => {
   }
 
   const { submitButton, input } = elements
-  
+
   input.addEventListener('input', (e) => {
     e.preventDefault()
     const inputData = input.value.trim()
@@ -65,19 +65,18 @@ export default () => {
     e.preventDefault()
 
     validate(proxyState.formState.url)
-    .then(validationResult => {
-        if(!validationResult.isValid) {
-            proxyState.formState.status = 'error'
-            return
+      .then((result) => {
+        proxyState.formState.status = result.status
+        if (result.status === 'success') {
+          proxyState.formState.previousValidURL = proxyState.formState.url
+        } else {
+          console.log('Ошибка:', result.message)
         }
-        const isDublicate = proxyState.formState.url === proxyState.formState.previousValidURL
-        if (isDublicate) {
-            proxyState.formState.status = 'dublicate'
-            return
-        }
-        proxyState.formState.status = 'success'
-        proxyState.formState.previousValidURL = proxyState.formState.url
-    })
-    .catch(() => proxyState.formState.status = 'error')
+        console.log(proxyState.formState)
+      })
+      .catch((error) => {
+        proxyState.formState.status = error.name
+        console.log('Непредвиденная ошибка')
+      })
   })
 }
