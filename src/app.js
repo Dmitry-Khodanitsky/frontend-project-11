@@ -30,13 +30,11 @@ export default () => {
     },
   })
 
-  const schema = yup.object().shape({
-    url: yup.string().url().trim().required(),
-  })
+  const schema = yup.string().url().trim().required()
 
   const validate = (url) => {
     return schema
-      .validate({ url })
+      .validate(url)
       .then((validData) => {
         const isDublicate =
           proxyState.formState.url === proxyState.formState.previousValidURL
