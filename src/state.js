@@ -1,9 +1,9 @@
 export const createState = () => {
     return {
     formState: {
-        url: '',
-        status: '', // success, dublicate, error
-        previousValidURL: '',
+        url: null,
+        status: null, // success, dublicate, error
+        previousValidURL: null,
     },
     processState: {
         processStatus: 'filling', //sent, error
