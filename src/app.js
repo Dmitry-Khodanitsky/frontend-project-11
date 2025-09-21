@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import { elements, proxyState } from './view'
-
+import i18next from 'i18next'
 
 export default () => {
   
