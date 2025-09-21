@@ -1,5 +1,6 @@
 import onChange from 'on-change'
 import { createState } from './state'
+import i18next from 'i18next'
 
 export const elements = {
   submitButton: document.querySelector('button[type="submit"]'),
@@ -16,20 +17,19 @@ export const proxyState = onChange(state, (path) => {
 })
 
 export const renderUI = (proxyState, elements) => {
+  elements.feedback.textContent = i18next.t(
+    `statusMessage.${proxyState.formState.status}`
+  )
+
   if (proxyState.formState.status !== 'success') {
     elements.feedback.classList.add('text-danger')
     elements.feedback.classList.remove('text-success')
     elements.input.classList.add('is-invalid')
-
-    proxyState.formState.status === 'error'
-      ? (elements.feedback.textContent = 'Ресурс не содержит валидный RSS')
-      : (elements.feedback.textContent = 'RSS уже существует')
     return
   }
 
   elements.input.focus()
   elements.input.value = ''
-  elements.feedback.textContent = 'RSS успешно загружен'
   elements.feedback.classList.add('text-success')
   elements.feedback.classList.remove('text-danger')
   elements.input.classList.remove('is-invalid')
