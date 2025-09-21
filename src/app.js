@@ -19,6 +19,16 @@ export default () => {
       },
     },
   })
+
+  yup.setLocale({
+    mixed: {
+      default: 'Ссылка должна быть валидным URL',
+      required: 'Введите ссылку RRS',
+    },
+    string: {
+      url: 'Ссылка должна быть валидным URL',
+    },
+  })
   
   const schema = yup.object().shape({
     url: yup.string().url().trim().required(),
