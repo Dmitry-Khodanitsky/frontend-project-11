@@ -3,6 +3,22 @@ import { elements, proxyState } from './view'
 import i18next from 'i18next'
 
 export default () => {
+
+  i18next.init({
+    lng: 'ru',
+    resources: {
+      ru: {
+        translation: {
+          statusMessage: {
+            error: 'Ссылка должна быть валидным URL',
+            dublicate: 'RSS уже существует',
+            success: 'RSS успешно загружен',
+            invalidRSS: 'Ресурс не содержит валидный RSS',
+          },
+        },
+      },
+    },
+  })
   
   const schema = yup.object().shape({
     url: yup.string().url().trim().required(),
