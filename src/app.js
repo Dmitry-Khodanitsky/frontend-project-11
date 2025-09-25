@@ -31,14 +31,16 @@ export default () => {
     },
   })
 
+  const checkDublicate = (url) => {
+    return proxyState.formState.previousValidURLs.includes(url)
+  } 
   const schema = yup.string().url().trim().required()
 
   const validate = (url) => {
     return schema
       .validate(url)
       .then((validData) => {
-        const isDublicate =
-          proxyState.formState.url === proxyState.formState.previousValidURL
+        const isDublicate = checkDublicate(validData)
         if (isDublicate) {
           return {
             status: 'dublicate',
