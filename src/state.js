@@ -3,7 +3,7 @@ export const createState = () => {
     formState: {
       url: null,
       status: null, // success, dublicate, error
-      previousValidURL: null,
+      previousValidURLs: [],
     },
     processState: {
       isLoading: 'false', // "processing", "failed", "success"
