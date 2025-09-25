@@ -1,36 +1,75 @@
 import onChange from 'on-change'
-import { createState } from './state'
 import i18next from 'i18next'
+import { createState, createFeedDataState } from './state'
+import { createContentSection, createFeedListItem, createPostListItem } from './ui-components'
 
 export const elements = {
   submitButton: document.querySelector('button[type="submit"]'),
   input: document.querySelector('#url-input'),
   feedback: document.querySelector('.feedback'),
+  mainPage: document.querySelector('.flex-grow-1'),
 }
 
 const state = createState()
+const feedDataState = createFeedDataState()
 
 export const proxyState = onChange(state, (path) => {
-  if (path === 'formState.status') {
-    renderUI(proxyState, elements)
+  if (path === 'formState.status' || path === 'processState.isLoading') {
+    renderForm(proxyState, elements)
   }
 })
 
-export const renderUI = (proxyState, elements) => {
-  elements.feedback.textContent = i18next.t(
-    `statusMessage.${proxyState.formState.status}`
-  )
+export const proxyFeedDataState = onChange(feedDataState, () => {
+  renderContent()
+})
 
-  if (proxyState.formState.status !== 'success') {
-    elements.feedback.classList.add('text-danger')
-    elements.feedback.classList.remove('text-success')
-    elements.input.classList.add('is-invalid')
-    return
+// Рендер формы
+const renderForm = (proxyState, elements) => {
+  if (proxyState.formState.status) {
+    elements.submitButton.disabled = proxyState.processState.isLoading
+    elements.feedback.textContent = i18next.t(
+      `statusMessage.${proxyState.formState.status}`
+    )
+
+    const isSuccess = proxyState.formState.status === 'success'
+    elements.feedback.classList.toggle('text-success', isSuccess)
+    elements.feedback.classList.toggle('text-danger', !isSuccess)
+    elements.input.classList.toggle('is-invalid', !isSuccess)
+    //console.log(feedDataState)
+
+    if (isSuccess) {
+      elements.input.focus()
+      elements.input.value = ''
+    }
   }
-
-  elements.input.focus()
-  elements.input.value = ''
-  elements.feedback.classList.add('text-success')
-  elements.feedback.classList.remove('text-danger')
-  elements.input.classList.remove('is-invalid')
 }
+
+// рендер списка фидов и постов
+const renderContent = () => {
+  let contentSection = elements.mainPage.querySelector('.container-xxl')
+
+  if (!contentSection) {
+    contentSection = createContentSection()
+    updateContent(contentSection)
+    elements.mainPage.append(contentSection)
+  } else {
+    updateContent(contentSection)
+  }
+}
+
+const updateContent = (contentSection) => {
+  const feedsList = contentSection.querySelector('.feeds ul')
+  const postsList = contentSection.querySelector('.posts ul')
+
+  feedsList.innerHTML = ''
+  postsList.innerHTML = ''
+
+  proxyFeedDataState.feeds.forEach((feed) => {
+    createFeedListItem(feed, feedsList)
+  })
+  proxyFeedDataState.posts.forEach((post) => {
+    createPostListItem(post, postsList)
+  })
+
+}
+
