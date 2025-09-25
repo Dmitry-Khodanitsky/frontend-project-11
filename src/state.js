@@ -6,7 +6,7 @@ export const createState = () => {
         previousValidURL: null,
     },
     processState: {
-        processStatus: 'filling', //sent, error
+      isLoading: 'false', // "processing", "failed", "success"
         processError: null,
     }
   }
