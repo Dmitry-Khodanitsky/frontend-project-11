@@ -9,5 +9,9 @@ export const createState = () => {
       isLoading: 'false', // "processing", "failed", "success"
         processError: null,
     }
+export const createFeedDataState = () => {
+  return {
+    feeds: [],
+    posts: [],
   }
 }
