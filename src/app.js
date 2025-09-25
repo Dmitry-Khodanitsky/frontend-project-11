@@ -74,8 +74,8 @@ export default () => {
         proxyState.formState.status = result.status
 
         if (result.status === 'success') {
-          proxyState.formState.previousValidURL = proxyState.formState.url
-
+          proxyState.formState.previousValidURLs.push(proxyState.formState.url)
+          
           return fetchRRS(proxyState.formState.url)
             .then((data) => {
               try {
@@ -92,7 +92,6 @@ export default () => {
             })
             .catch(() => {
               console.log('Ошибка сети')
-              proxyState.formState.previousValidURL = null
               proxyState.processState.processError = 'networkError'
               proxyState.formState.status = 'networkError'
             })
