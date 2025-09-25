@@ -1,14 +1,17 @@
 export const createState = () => {
-    return {
+  return {
     formState: {
-        url: null,
-        status: null, // success, dublicate, error
-        previousValidURL: null,
+      url: null,
+      status: null, // success, dublicate, error
+      previousValidURL: null,
     },
     processState: {
       isLoading: 'false', // "processing", "failed", "success"
-        processError: null,
-    }
+      processError: null,
+    },
+  }
+}
+
 export const createFeedDataState = () => {
   return {
     feeds: [],
