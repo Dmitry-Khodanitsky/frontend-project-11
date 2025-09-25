@@ -1,11 +1,9 @@
 import * as yup from 'yup'
-import { elements, proxyState } from './view'
 import i18next from 'i18next'
 import { elements, proxyState, proxyFeedDataState } from './view'
 import { fetchRRS, parseFeedData } from './rrs-service'
 
 export default () => {
-
   i18next.init({
     lng: 'ru',
     resources: {
@@ -60,24 +58,53 @@ export default () => {
     e.preventDefault()
     const inputData = input.value.trim()
     proxyState.formState.url = inputData
+    proxyState.formState.status = null
   })
 
   submitButton.addEventListener('click', (e) => {
     e.preventDefault()
 
+    proxyState.processState.isLoading = true
+    proxyState.processState.processError = null
+
     validate(proxyState.formState.url)
       .then((result) => {
         proxyState.formState.status = result.status
+
         if (result.status === 'success') {
           proxyState.formState.previousValidURL = proxyState.formState.url
+
+          return fetchRRS(proxyState.formState.url)
+            .then((data) => {
+              try {
+                const feedData = parseFeedData(data)
+                console.log('Данные распарсены:', feedData)
+
+                proxyFeedDataState.feeds.unshift(feedData.feed)
+                proxyFeedDataState.posts.unshift(...feedData.posts)
+                console.log('Состояние обновлено')
+              } catch (parseError) {
+                console.error('Ошибка парсинга:', parseError)
+                throw parseError // Пробрасываем ошибку в catch
+              }
+            })
+            .catch(() => {
+              console.log('Ошибка сети')
+              proxyState.formState.previousValidURL = null
+              proxyState.processState.processError = 'networkError'
+              proxyState.formState.status = 'networkError'
+            })
         } else {
-          console.log('Ошибка:', result.message)
+          console.log('Ошибка: ', result.message)
         }
-        console.log(proxyState.formState)
       })
       .catch((error) => {
         proxyState.formState.status = error.name
+        proxyState.processState.processError = error.message
         console.log('Непредвиденная ошибка')
+      })
+      .finally(() => {
+        proxyState.processState.isLoading = false
       })
   })
 }
