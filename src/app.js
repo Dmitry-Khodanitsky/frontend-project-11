@@ -1,6 +1,8 @@
 import * as yup from 'yup'
 import { elements, proxyState } from './view'
 import i18next from 'i18next'
+import { elements, proxyState, proxyFeedDataState } from './view'
+import { fetchRRS, parseFeedData } from './rrs-service'
 
 export default () => {
 
