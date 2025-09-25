@@ -16,6 +16,7 @@ export default () => {
             dublicate: 'RSS уже существует',
             success: 'RSS успешно загружен',
             invalidRSS: 'Ресурс не содержит валидный RSS',
+            networkError: 'Ошибка сети',
           },
         },
       },
