@@ -1,17 +1,18 @@
 import axios from 'axios'
+import { proxyFeedDataState } from './view'
+
 
 export const fetchRRS = (url) => {
-
-    const parserXML = (data) => {
-      const parser = new DOMParser()
-      return parser.parseFromString(data, 'text/xml')
-    } 
-
-    const proxy = 'https://allorigins.hexlet.app/get?disableCache=true&url='
-    return axios.get(`${proxy}${url}`).then((response) => {
-      return parserXML(response.data.contents)
-    })
+  const parserXML = (data) => {
+    const parser = new DOMParser()
+    return parser.parseFromString(data, 'text/xml')
   }
+
+  const proxy = 'https://allorigins.hexlet.app/get?disableCache=true&url='
+  return axios.get(`${proxy}${url}`).then((response) => {
+    return parserXML(response.data.contents)
+  })
+}
 
 export const parseFeedData = (dataXml, url, existingFeedId = null) => {
   const getTitle = (parent) => {
@@ -26,16 +27,16 @@ export const parseFeedData = (dataXml, url, existingFeedId = null) => {
 
 
   const feedId = existingFeedId || crypto.randomUUID().split('-')[0]
-    const xmlItems = dataXml.querySelectorAll('item') 
+  const xmlItems = dataXml.querySelectorAll('item')
   const posts = Array.from(xmlItems).map((item) => ({
-        feedID: feedId,
-        id: crypto.randomUUID().split('-')[0],
+    feedID: feedId,
+    id: crypto.randomUUID().split('-')[0],
     title: getTitle(item),
     description: getDescription(item),
-        publishTime: item.querySelector('pubDate').textContent,
-        link: item.querySelector('link').textContent,
-    }))
-    return {
+    publishTime: item.querySelector('pubDate').textContent,
+    link: item.querySelector('link').textContent,
+  }))
+  return {
     feed: { feedId, title: getTitle(dataXml), description: getDescription(dataXml), url },
     posts: posts,
   }
@@ -71,6 +72,21 @@ const updateFeedData = (dataXML, feedId) => {
     console.log(feedId, ' Новых постов не было')
   }
 }
-    }
+
+// poller manage
+const pollingTimers = {}
+
+export const pollFeedsForUpdates = (url, feedId) => {
+  function request() {
+    fetchRRS(url).then((data) => updateFeedData(data, feedId))
+    pollingTimers[feedId] = setTimeout(request, 5000)
+  }
+  pollingTimers[feedId] = setTimeout(request, 5000)
+}
+export const stopPollingFeed = (feedId) => {
+  if (pollingTimers[feedId]) {
+    clearTimeout(pollingTimers[feedId])
+    delete pollingTimers[feedId]
+  }
 }
 
