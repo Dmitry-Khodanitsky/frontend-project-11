@@ -2,6 +2,7 @@ import onChange from 'on-change'
 import i18next from 'i18next'
 import { createState, createFeedDataState } from './state'
 import { createContentSection, createFeedListItem, createPostListItem } from './ui-components'
+import { pollFeedsForUpdates, stopPollingFeed } from './rrs-service'
 
 export const elements = {
   submitButton: document.querySelector('button[type="submit"]'),
