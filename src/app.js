@@ -32,22 +32,29 @@ export default () => {
   })
 
   const checkDublicate = (url) => {
-    return proxyState.formState.previousValidURLs.includes(url)
-  } 
+    let isDublicate = false
+    proxyFeedDataState.feeds.forEach((feed) => {
+      if (feed.url === url) {
+        isDublicate = true
+      }
+    })
+    return isDublicate
+  }
+
   const schema = yup.string().url().trim().required()
 
   const validate = (url) => {
     return schema
       .validate(url)
-      .then((validData) => {
-        const isDublicate = checkDublicate(validData)
+      .then((validUrl) => {
+        const isDublicate = checkDublicate(validUrl)
         if (isDublicate) {
           return {
             status: 'dublicate',
             message: i18next.t('statusMessage.dublicate'),
           }
         }
-        return { status: 'success', data: validData }
+        return { status: 'success', data: validUrl }
       })
       .catch((error) => {
         return { status: 'error', message: error.message }
