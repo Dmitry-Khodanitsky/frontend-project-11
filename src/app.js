@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import i18next from 'i18next'
-import { elements, proxyState, proxyFeedDataState } from './view'
+import { elements, proxyState, proxyFeedDataState, feedDataState } from './view'
 import { fetchRRS, parseFeedData } from './rrs-service'
 
 export default () => {
@@ -81,17 +81,20 @@ export default () => {
         proxyState.formState.status = result.status
 
         if (result.status === 'success') {
-          proxyState.formState.previousValidURLs.push(proxyState.formState.url)
-          
           return fetchRRS(proxyState.formState.url)
             .then((data) => {
               try {
-                const feedData = parseFeedData(data)
+                const feedData = parseFeedData(data, proxyState.formState.url)
                 console.log('Данные распарсены:', feedData)
 
-                proxyFeedDataState.feeds.unshift(feedData.feed)
+                proxyFeedDataState.feeds = [
+                  feedData.feed,
+                  ...proxyFeedDataState.feeds,
+                ]
                 proxyFeedDataState.posts.unshift(...feedData.posts)
-                console.log('Состояние обновлено')
+          
+                console.log('Состояние обновлено: ', feedDataState)
+                
               } catch (parseError) {
                 console.error('Ошибка парсинга:', parseError)
                 throw parseError // Пробрасываем ошибку в catch
