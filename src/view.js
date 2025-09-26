@@ -11,7 +11,7 @@ export const elements = {
 }
 
 const state = createState()
-const feedDataState = createFeedDataState()
+export const feedDataState = createFeedDataState()
 
 export const proxyState = onChange(state, (path) => {
   if (path === 'formState.status' || path === 'processState.isLoading') {
@@ -19,7 +19,14 @@ export const proxyState = onChange(state, (path) => {
   }
 })
 
-export const proxyFeedDataState = onChange(feedDataState, () => {
+export const proxyFeedDataState = onChange(feedDataState, (path) => {
+  if (path === 'feeds') {
+    feedDataState.feeds.forEach(feed => {
+      stopPollingFeed(feed.feedId)
+      pollFeedsForUpdates(feed.url, feed.feedId)}
+    )
+  }
+   
   renderContent()
 })
 
