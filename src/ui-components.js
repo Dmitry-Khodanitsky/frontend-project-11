@@ -1,3 +1,5 @@
+import { proxyFeedDataState } from "./view"
+
 export const createContentSection = () => {
   const contentSection = document.createElement('section')
   contentSection.classList.add('container-fluid', 'container-xxl', 'p-5')
@@ -72,9 +74,10 @@ export const createPostListItem = (post, list) => {
   listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0')
 
   const postLink = document.createElement('a')
-  postLink.classList.add('fw-bold')
+  post.opened ? postLink.classList.add('fw-normal', 'link-secondary') : postLink.classList.add('fw-bold')
   postLink.setAttribute('href', post.link)
-  postLink.setAttribute('data-id', post.feedId)
+  postLink.setAttribute('data-id', post.id)
+  postLink.setAttribute('data-feed-id', post.feedId)
   postLink.setAttribute('target', '_blank')
   postLink.setAttribute('rel', 'noopener noreferrer')
   postLink.textContent = post.title
@@ -90,4 +93,52 @@ export const createPostListItem = (post, list) => {
 
   listItem.append(postLink, postButton)
   list.append(listItem)
+
+  postButton.addEventListener('click', (e) => {
+    const postId = e.target.getAttribute('data-id')
+    handlePostButton(postId)
+  })
 }
+
+const handlePostButton = (postId) => {
+  const post = proxyFeedDataState.posts.find(post => post.id === postId)
+  if (post) {
+    post.opened = true
+  }
+  updatePostLinkStyle(postId)
+  openPostModal(post)
+}
+
+const updatePostLinkStyle = (postId) => {
+  const postLink = document.querySelector(`a[data-id="${postId}"]`)
+  postLink.classList.remove('fw-bold')
+  postLink.classList.add('fw-normal')
+  postLink.classList.add('link-secondary')
+}
+
+const openPostModal = (post) => {
+  const modal = document.querySelector('#modal')
+  const modalTitle = modal.querySelector('.modal-title')
+  const modalDescription = modal.querySelector('.modal-body p')
+  const readButton = modal.querySelector('.full-article')
+  const closeButton = modal.querySelector('.close-button')
+  
+  modal.classList.add('show')
+  modal.setAttribute('arial-model', 'true')
+  modal.setAttribute('style', 'display: block')
+  modal.removeAttribute('aria-hidden')
+  modal.setAttribute('role', 'dialog')
+
+  modalTitle.textContent = post.title
+  modalDescription.textContent = post.description
+
+  readButton.setAttribute('href', `${post.link}`)
+  
+  closeButton.addEventListener('click', () => {
+    modal.classList.remove('show')
+    modal.removeAttribute('arial-model')
+    modal.removeAttribute('role', 'dialog')
+    modal.setAttribute('style', 'display: none')
+    modal.setAttribute('aria-hidden', 'true')  
+  })
+} 
