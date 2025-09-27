@@ -29,12 +29,13 @@ export const parseFeedData = (dataXml, url, existingFeedId = null) => {
   const feedId = existingFeedId || crypto.randomUUID().split('-')[0]
   const xmlItems = dataXml.querySelectorAll('item')
   const posts = Array.from(xmlItems).map((item) => ({
-    feedID: feedId,
+    feedId: feedId,
     id: crypto.randomUUID().split('-')[0],
     title: getTitle(item),
     description: getDescription(item),
     publishTime: item.querySelector('pubDate').textContent,
     link: item.querySelector('link').textContent,
+    opened: false,
   }))
   return {
     feed: { feedId, title: getTitle(dataXml), description: getDescription(dataXml), url },
