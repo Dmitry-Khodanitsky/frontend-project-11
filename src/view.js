@@ -78,6 +78,4 @@ const updateContent = (contentSection) => {
   proxyFeedDataState.posts.forEach((post) => {
     createPostListItem(post, postsList)
   })
-
 }
-
