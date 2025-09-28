@@ -48,8 +48,6 @@ const createListContainer = (contentType) => {
     : contentList.classList.add('rounded-0')
 
   cardBody.append(contentList)
-
-  //console.log(feedsContainer)
   return mainContainer
 }
 
@@ -68,7 +66,7 @@ export const createFeedListItem = (feed, list) => {
 
   listItem.append(itemTitle, itemDescription)
 
-  list.append(listItem) // не работает
+  list.append(listItem)
 }
 
 export const createPostListItem = (post, list) => {
@@ -127,7 +125,7 @@ const openPostModal = (post) => {
   modalTitle.textContent = post.title
   modalDescription.textContent = post.description
   readButton.setAttribute('href', post.link)
-  
+
   const myModal = new Modal(modalElement)
   myModal.show()
 } 
