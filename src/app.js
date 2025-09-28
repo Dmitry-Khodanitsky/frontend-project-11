@@ -37,12 +37,14 @@ export default () => {
                 proxyFeedDataState.posts.unshift(...feedData.posts)
 
                 console.log('Состояние обновлено: ', feedDataState)
-              } catch (parseError) {
+              }
+              catch (parseError) {
                 console.error('Ошибка парсинга:', parseError)
                 if (parseError.message === i18next.t('statusMessage.invalidRSS')) {
                   proxyState.processState.processError = 'invalidRSS'
                   proxyState.formState.status = 'invalidRSS'
-                } else {
+                }
+                else {
                   throw parseError
                 }
               }
@@ -52,7 +54,8 @@ export default () => {
               proxyState.processState.processError = 'networkError'
               proxyState.formState.status = 'networkError'
             })
-        } else {
+        }
+        else {
           console.log('Ошибка: ', result.message)
         }
       })

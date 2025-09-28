@@ -22,12 +22,13 @@ export const proxyState = onChange(state, (path) => {
 
 export const proxyFeedDataState = onChange(feedDataState, (path) => {
   if (path === 'feeds') {
-    feedDataState.feeds.forEach(feed => {
+    feedDataState.feeds.forEach((feed) => {
       stopPollingFeed(feed.feedId)
-      pollFeedsForUpdates(feed.url, feed.feedId)}
+      pollFeedsForUpdates(feed.url, feed.feedId)
+    },
     )
   }
-   
+
   renderContent()
 })
 
@@ -36,14 +37,14 @@ const renderForm = (proxyState, elements) => {
   if (proxyState.formState.status) {
     elements.submitButton.disabled = proxyState.processState.isLoading
     elements.feedback.textContent = i18next.t(
-      `statusMessage.${proxyState.formState.status}`
+      `statusMessage.${proxyState.formState.status}`,
     )
 
     const isSuccess = proxyState.formState.status === 'success'
     elements.feedback.classList.toggle('text-success', isSuccess)
     elements.feedback.classList.toggle('text-danger', !isSuccess)
     elements.input.classList.toggle('is-invalid', !isSuccess)
-    //console.log(feedDataState)
+    // console.log(feedDataState)
 
     if (isSuccess) {
       elements.input.focus()
@@ -60,7 +61,8 @@ const renderContent = () => {
     contentSection = createContentSection()
     updateContent(contentSection)
     elements.mainPage.append(contentSection)
-  } else {
+  }
+  else {
     updateContent(contentSection)
   }
 }

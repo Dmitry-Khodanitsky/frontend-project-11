@@ -1,5 +1,5 @@
 import { Modal } from 'bootstrap'
-import { proxyFeedDataState } from "./view"
+import { proxyFeedDataState } from './view'
 import i18next from 'i18next'
 
 export const createContentSection = () => {
@@ -20,7 +20,7 @@ const createListContainer = (contentType) => {
   mainContainer.classList.add(
     'col-md-10',
     'mx-auto',
-    'order-lg-1'
+    'order-lg-1',
   )
   contentType === 'feed'
     ? mainContainer.classList.add('feeds', 'col-lg-4', 'order-0')
@@ -128,4 +128,4 @@ const openPostModal = (post) => {
 
   const myModal = new Modal(modalElement)
   myModal.show()
-} 
+}

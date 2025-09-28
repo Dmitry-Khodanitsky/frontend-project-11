@@ -2,7 +2,6 @@ import axios from 'axios'
 import { proxyFeedDataState } from './view'
 import i18next from 'i18next'
 
-
 export const fetchRRS = (url) => {
   const parserXML = (data) => {
     const parser = new DOMParser()
@@ -18,7 +17,7 @@ export const fetchRRS = (url) => {
 export const parseFeedData = (dataXml, url, existingFeedId = null) => {
   const rssElement = dataXml.querySelector('rss')
   const channelElement = dataXml.querySelector('channel')
-  
+
   if (!rssElement && !channelElement) {
     throw new Error(i18next.t('statusMessage.invalidRSS'))
   }
@@ -33,10 +32,9 @@ export const parseFeedData = (dataXml, url, existingFeedId = null) => {
     return descEl ? descEl.textContent : ''
   }
 
-
   const feedId = existingFeedId || crypto.randomUUID().split('-')[0]
   const xmlItems = dataXml.querySelectorAll('item')
-  const posts = Array.from(xmlItems).map((item) => ({
+  const posts = Array.from(xmlItems).map(item => ({
     feedId: feedId,
     id: crypto.randomUUID().split('-')[0],
     title: getTitle(item),
@@ -53,9 +51,9 @@ export const parseFeedData = (dataXml, url, existingFeedId = null) => {
 
 const getUpdatePosts = (oldPosts, newDataXML, existingFeedId = null) => {
   const newData = parseFeedData(newDataXML, existingFeedId)
-  const currentTitles = new Set(oldPosts.map((post) => post.title))
+  const currentTitles = new Set(oldPosts.map(post => post.title))
   const newPosts = newData.posts.filter(
-    (post) => !currentTitles.has(post.title)
+    post => !currentTitles.has(post.title),
   )
   return [...newPosts, ...oldPosts]
 }
@@ -74,10 +72,11 @@ const updateFeedData = (dataXML, feedId) => {
     // Логирование, можно удалить
     const newPosts = updatedPosts.slice(
       0,
-      updatedPosts.length - oldPosts.length
+      updatedPosts.length - oldPosts.length,
     )
     console.log(feedId, ' Добавлены новые посты', newPosts)
-  } else {
+  }
+  else {
     console.log(feedId, ' Новых постов не было')
   }
 }
@@ -87,7 +86,7 @@ const pollingTimers = {}
 
 export const pollFeedsForUpdates = (url, feedId) => {
   function request() {
-    fetchRRS(url).then((data) => updateFeedData(data, feedId))
+    fetchRRS(url).then(data => updateFeedData(data, feedId))
     pollingTimers[feedId] = setTimeout(request, 5000)
   }
   pollingTimers[feedId] = setTimeout(request, 5000)
@@ -98,4 +97,3 @@ export const stopPollingFeed = (feedId) => {
     delete pollingTimers[feedId]
   }
 }
-
