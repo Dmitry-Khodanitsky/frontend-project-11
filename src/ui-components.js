@@ -1,3 +1,4 @@
+import { Modal } from 'bootstrap'
 import { proxyFeedDataState } from "./view"
 
 export const createContentSection = () => {
@@ -117,28 +118,15 @@ const updatePostLinkStyle = (postId) => {
 }
 
 const openPostModal = (post) => {
-  const modal = document.querySelector('#modal')
-  const modalTitle = modal.querySelector('.modal-title')
-  const modalDescription = modal.querySelector('.modal-body p')
-  const readButton = modal.querySelector('.full-article')
-  const closeButton = modal.querySelector('.close-button')
-  
-  modal.classList.add('show')
-  modal.setAttribute('arial-model', 'true')
-  modal.setAttribute('style', 'display: block')
-  modal.removeAttribute('aria-hidden')
-  modal.setAttribute('role', 'dialog')
+  const modalElement = document.querySelector('.modal')
+  const modalTitle = modalElement.querySelector('.modal-title')
+  const modalDescription = modalElement.querySelector('.modal-body p')
+  const readButton = modalElement.querySelector('.modal-footer .btn-primary')
 
   modalTitle.textContent = post.title
   modalDescription.textContent = post.description
-
-  readButton.setAttribute('href', `${post.link}`)
+  readButton.setAttribute('href', post.link)
   
-  closeButton.addEventListener('click', () => {
-    modal.classList.remove('show')
-    modal.removeAttribute('arial-model')
-    modal.removeAttribute('role', 'dialog')
-    modal.setAttribute('style', 'display: none')
-    modal.setAttribute('aria-hidden', 'true')  
-  })
+  const myModal = new Modal(modalElement)
+  myModal.show()
 } 
