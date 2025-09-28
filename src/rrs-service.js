@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { proxyFeedDataState } from './view'
+import i18next from 'i18next'
 
 
 export const fetchRRS = (url) => {
@@ -15,6 +16,13 @@ export const fetchRRS = (url) => {
 }
 
 export const parseFeedData = (dataXml, url, existingFeedId = null) => {
+  const rssElement = dataXml.querySelector('rss')
+  const channelElement = dataXml.querySelector('channel')
+  
+  if (!rssElement && !channelElement) {
+    throw new Error(i18next.t('statusMessage.invalidRSS'))
+  }
+
   const getTitle = (parent) => {
     const titleEl = parent.querySelector('title')
     return titleEl ? titleEl.textContent : ''
