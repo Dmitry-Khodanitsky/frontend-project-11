@@ -103,11 +103,6 @@ Messages are localized in `utils.js` via `i18next`.
 - `npm run build` — build
 - `npm run preview` — local preview after build
 
-## 💻 Local Development
-
-- Modify code in `src/*`, styles in `styles/style.css`
-- Open DevTools console: useful logs are provided in code for parsing/updates
-
 ## 📄 License
 
 MIT
