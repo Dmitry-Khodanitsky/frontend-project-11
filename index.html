@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles/style.css" />
@@ -8,14 +8,7 @@
     <title>RRS aggregator</title>
   </head>
   <body>
-    <div
-      class="modal fade"
-      tabindex="-1"
-      id="modal"
-      aria-labelledby="modal"
-      aria-hidden="true"
-      style="display: none;"
-    >
+    <div class="modal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -39,7 +32,13 @@
             >
               Читать полностью
             </a>
-            <button type="button" class="btn btn-secondary close-button">Закрыть</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Закрыть
+            </button>
           </div>
         </div>
       </div>
