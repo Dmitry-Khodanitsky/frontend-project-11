@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import i18next from 'i18next'
 import { proxyFeedDataState } from './view'
 
-export const initI18n = i18next.init({
+i18next.init({
   lng: 'ru',
   resources: {
     ru: {
