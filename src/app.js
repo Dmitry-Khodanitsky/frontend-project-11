@@ -1,6 +1,6 @@
 import { validate } from './utils'
 import { elements, proxyState, proxyFeedDataState, feedDataState } from './view'
-import { fetchRRS, parseFeedData } from './rrs-service'
+import { fetchRSS, parseFeedData } from './rss-service'
 import i18next from 'i18next'
 
 export default () => {
@@ -24,7 +24,7 @@ export default () => {
         proxyState.formState.status = result.status
 
         if (result.status === 'success') {
-          return fetchRRS(proxyState.formState.url)
+          return fetchRSS(proxyState.formState.url)
             .then((data) => {
               try {
                 const feedData = parseFeedData(data, proxyState.formState.url)

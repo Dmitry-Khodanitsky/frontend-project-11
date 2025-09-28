@@ -2,7 +2,7 @@ import axios from 'axios'
 import { proxyFeedDataState } from './view'
 import i18next from 'i18next'
 
-export const fetchRRS = (url) => {
+export const fetchRSS = (url) => {
   const parserXML = (data) => {
     const parser = new DOMParser()
     return parser.parseFromString(data, 'text/xml')
@@ -86,7 +86,7 @@ const pollingTimers = {}
 
 export const pollFeedsForUpdates = (url, feedId) => {
   function request() {
-    fetchRRS(url).then(data => updateFeedData(data, feedId))
+    fetchRSS(url).then(data => updateFeedData(data, feedId))
     pollingTimers[feedId] = setTimeout(request, 5000)
   }
   pollingTimers[feedId] = setTimeout(request, 5000)
