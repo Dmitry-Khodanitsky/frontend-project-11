@@ -1,5 +1,6 @@
 import { Modal } from 'bootstrap'
 import { proxyFeedDataState } from "./view"
+import i18next from 'i18next'
 
 export const createContentSection = () => {
   const contentSection = document.createElement('section')
@@ -90,7 +91,7 @@ export const createPostListItem = (post, list) => {
   postButton.setAttribute('data-bs-toggle', 'modal')
   postButton.setAttribute('data-bs-target', '#modal')
   postButton.classList.add('btn', 'btn-outline-primary', 'btn-sm')
-  postButton.textContent = 'Просмотр'
+  postButton.textContent = i18next.t('buttonText.view')
 
   listItem.append(postLink, postButton)
   list.append(listItem)
