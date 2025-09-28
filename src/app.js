@@ -1,9 +1,9 @@
 import { validate } from './utils'
 import { elements, proxyState, proxyFeedDataState, feedDataState } from './view'
 import { fetchRRS, parseFeedData } from './rrs-service'
+import i18next from 'i18next'
 
 export default () => {
-
   const { submitButton, input } = elements
 
   input.addEventListener('input', (e) => {
@@ -35,12 +35,16 @@ export default () => {
                   ...proxyFeedDataState.feeds,
                 ]
                 proxyFeedDataState.posts.unshift(...feedData.posts)
-          
+
                 console.log('Состояние обновлено: ', feedDataState)
-                
               } catch (parseError) {
                 console.error('Ошибка парсинга:', parseError)
-                throw parseError // Пробрасываем ошибку в catch
+                if (parseError.message === i18next.t('statusMessage.invalidRSS')) {
+                  proxyState.processState.processError = 'invalidRSS'
+                  proxyState.formState.status = 'invalidRSS'
+                } else {
+                  throw parseError
+                }
               }
             })
             .catch(() => {
