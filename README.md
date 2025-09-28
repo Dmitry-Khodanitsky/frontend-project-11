@@ -42,7 +42,7 @@ cd frontend-project-11
 npm ci
 ```
 
-## ⚡️ Quick Start 
+## ⚡️ Quick Start
 
 Requires Node.js 18+.
 
@@ -110,4 +110,4 @@ Messages are localized in `utils.js` via `i18next`.
 
 ## 📄 License
 
-MIT (unless otherwise specified).
+MIT
