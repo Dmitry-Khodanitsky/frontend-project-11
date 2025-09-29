@@ -1,25 +1,12 @@
 import * as yup from 'yup'
 import i18next from 'i18next'
+import ru from './locales/ru'
 import { proxyFeedDataState } from './view'
 
 i18next.init({
   lng: 'ru',
   resources: {
-    ru: {
-      translation: {
-        statusMessage: {
-          error: 'Ссылка должна быть валидным URL',
-          duplicate: 'RSS уже существует',
-          success: 'RSS успешно загружен',
-          invalidRSS: 'Ресурс не содержит валидный RSS',
-          networkError: 'Ошибка сети',
-          empty: 'Не должно быть пустым',
-        },
-        buttonText: {
-          view: 'Просмотр',
-        },
-      },
-    },
+    ru,
   },
 })
 
